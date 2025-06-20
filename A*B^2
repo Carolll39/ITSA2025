@@ -1,0 +1,27 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+void decompose(int N) {
+    int A = N;
+    int B = 1;
+
+    for (int i = 2; i * i <= A; ++i) {
+        int count = 0;
+        while (A % (i * i) == 0) {
+            A /= i * i;
+            B *= i;
+        }
+    }
+
+    cout << N << " = " << A << "*" << B << "^2" << endl;
+}
+
+int main() {
+    int N;
+    while (cin >> N) {
+        if (N <= 1 || N >= 1000000000) continue;
+        decompose(N);
+    }
+    return 0;
+}
