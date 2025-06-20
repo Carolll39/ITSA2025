@@ -1,0 +1,52 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+struct Team {
+    int number;
+    int score;
+};
+
+bool compare(const Team &a, const Team &b) {
+    if (a.score != b.score)
+        return a.score > b.score; 
+    return a.number < b.number;
+}
+
+int main() {
+    int n;
+    cin >> n;
+    cin.ignore(); 
+
+    vector<Team> teams = {{1, 0}, {2, 0}, {3, 0}};
+
+    for (int i = 0; i < n; ++i) {
+        string result1, result2, result3;
+        cin >> result1 >> result2 >> result3;
+
+        vector<string> results = {result1, result2, result3};
+        for (int j = 0; j < 3; ++j) {
+            if (results[j] == "correct")
+                teams[j].score += 10;
+            else if (results[j] == "wrong")
+                teams[j].score -= 10;
+        }
+    }
+
+    sort(teams.begin(), teams.end(), compare);
+
+    for (int i = 0; i < 3; ) {
+        int j = i;
+        while (j < 3 && teams[j].score == teams[i].score) j++;
+
+        for (int k = i; k < j; ++k) {
+            cout << "(" << teams[k].number << "," << teams[k].score << ")";
+        }
+        cout << endl;
+        i = j;
+    }
+
+    return 0;
+}
