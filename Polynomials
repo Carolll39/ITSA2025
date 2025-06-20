@@ -1,0 +1,36 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+vector<int> multiply(const vector<int>& poly1, const vector<int>& poly2) {
+    vector<int> result(poly1.size() + poly2.size() - 1, 0);
+
+    for (size_t i = 0; i < poly1.size(); ++i) {
+        for (size_t j = 0; j < poly2.size(); ++j) {
+            result[i + j] += poly1[i] * poly2[j];
+        }
+    }
+
+    return result;
+}
+
+int main() {
+    int a, b, c, d;
+    cin >> a >> b >> c >> d;
+
+    vector<int> poly = {c, b, a};
+
+    vector<int> result = {1};
+
+    for (int i = 0; i < d; ++i) {
+        result = multiply(result, poly);
+    }
+
+    for (int i = result.size() - 1; i >= 0; --i) {
+        cout << result[i];
+        if (i != 0) cout << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
