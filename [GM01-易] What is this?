@@ -1,0 +1,81 @@
+#include <iostream>
+#include <cmath>
+#include <vector>
+using namespace std;
+
+bool isValidRange(int x) {
+    return x >= -1000 && x <= 1000;
+}
+
+int distSq(int x1, int y1, int x2, int y2) {
+    int dx = x2 - x1;
+    int dy = y2 - y1;
+    return dx * dx + dy * dy;
+}
+
+int dot(int x1, int y1, int x2, int y2, int x3, int y3) {
+    int vx1 = x2 - x1;
+    int vy1 = y2 - y1;
+    int vx2 = x3 - x2;
+    int vy2 = y3 - y2;
+    return vx1 * vx2 + vy1 * vy2;
+}
+
+int cross(int x1, int y1, int x2, int y2, int x3, int y3) {
+    int vx1 = x2 - x1;
+    int vy1 = y2 - y1;
+    int vx2 = x3 - x2;
+    int vy2 = y3 - y2;
+    return vx1 * vy2 - vy1 * vx2;
+}
+
+int main() {
+    vector<int> coords(8);
+    for (int i = 0; i < 8; ++i) {
+        cin >> coords[i];
+        if (!isValidRange(coords[i])) {
+            cout << "invalid" << endl;
+            return 0;
+        }
+    }
+
+    int x1 = coords[0], y1 = coords[1];
+    int x2 = coords[2], y2 = coords[3];
+    int x3 = coords[4], y3 = coords[5];
+    int x4 = coords[6], y4 = coords[7];
+
+    int d1 = distSq(x1, y1, x2, y2);
+    int d2 = distSq(x2, y2, x3, y3);
+    int d3 = distSq(x3, y3, x4, y4);
+    int d4 = distSq(x4, y4, x1, y1);
+
+    int diag1 = distSq(x1, y1, x3, y3);
+    int diag2 = distSq(x2, y2, x4, y4);
+
+    bool right1 = dot(x1, y1, x2, y2, x3, y3) == 0;
+    bool right2 = dot(x2, y2, x3, y3, x4, y4) == 0;
+    bool right3 = dot(x3, y3, x4, y4, x1, y1) == 0;
+    bool right4 = dot(x4, y4, x1, y1, x2, y2) == 0;
+
+    bool oppSidesEqual = (d1 == d3 && d2 == d4);
+
+    bool allSidesEqual = (d1 == d2 && d2 == d3 && d3 == d4);
+
+    if (right1 && right2 && right3 && right4) {
+        if (allSidesEqual)
+            cout << "square" << endl;
+        else if (oppSidesEqual)
+            cout << "rectangle" << endl;
+        else
+            cout << "others" << endl;
+    } else if (allSidesEqual) {
+        cout << "diamond" << endl;
+    } else if (oppSidesEqual &&
+               cross(x1, y1, x2, y2, x3, y3) == cross(x3, y3, x4, y4, x1, y1)) {
+        cout << "parallelogram" << endl;
+    } else {
+        cout << "others" << endl;
+    }
+
+    return 0;
+}
